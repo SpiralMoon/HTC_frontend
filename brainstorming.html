@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HTC-"방제목"</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+  	<!-- CSS  -->
+  	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  	<link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  	<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+	<!-- 메인 페이지 -->
+  	<nav id="home" class="white" role="navigation">
+    	<div class="nav-wrapper container">
+      		<a id="logo-container" href="#" class="brand-logo waves-effect">방 제목</a>
+      		<ul class="right hide-on-med-and-down">
+        		<li><a class="navButton" href="index.html">EXIT</a></li>
+      		</ul>
+      		<ul id="nav-mobile" class="side-nav">
+        		<li><a class="navButton" href="index.html">EXIT</a></li>
+      		</ul>
+      		<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    	</div>
+	</nav>
+
+	<div class="container">
+    	<div class="section">
+    		<form action="#">
+    			<p class="range-field">
+      		  <input type="range" id="test5" min="0" max="100" value="20" disabled />
+    			</p>
+  			</form>
+      		<div class="row">
+            <div class="col s3 center">
+          		  <h3><i class="mdi-content-send brown-text"></i></h3>
+          			<h4>Chatting room</h4>
+          			<input type="text" value="??? joined." disabled
+          			style="width:100%; height:500px; border:1px solid; border-color: black; ">
+        		</div>
+        		<div class="col s9 center">
+          			<h3><i class="mdi-content-send brown-text"></i></h3>
+          			<h4>Idea Sketch Board</h4>
+          			<canvas id="ideaBoard" style="width:100%; height:500px; border:1px solid; border-color: black; ">
+          			</canvas>
+        		</div>
+      		</div>
+      		<div class="row">
+        		<div class="input-field col s3">
+          			<input id="first_name" type="text" class="validate" length="30" maxLength="30" onkeydown="enterMessage(event, this)">
+          			<label for="first_name">Enter the message.</label>
+        		</div>
+        		<div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
+          			<input id="first_name" type="text" class="validate" length="10" maxLength="10" onkeydown="enterOpinion(event, this)">
+          			<label for="first_name">Enter the your opinion.</label>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
+
+	<!-- Scripts -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.3/fabric.min.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  	<script src="js/materialize.js"></script>
+  	<script src="js/init.js"></script>
+  	<script src="js/ClientWebSocket.js"></script>
+  	<script src="js/IdeaBoard.js"></script>
+  	<script>
+  		function enterOpinion (event, input) {
+  			var isEntered = (event.keyCode == 13)?  true : false;
+
+  			if (isEntered) {
+  				add(this);
+  				console.log(input.value);
+  				input.value = "";
+  			}
+  		}
+  		function enterMessage (event, input) {
+  			var isEntered = (event.keyCode == 13)?  true : false;
+
+  			if (isEntered) {
+  				console.log(input.value);
+  				input.value = "";
+  			}
+  		}
+  	</script>
+</body>
+</html>
