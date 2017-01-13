@@ -16,10 +16,10 @@
     	<div class="nav-wrapper container">
       		<a id="logo-container" href="#" class="brand-logo waves-effect">방 제목</a>
       		<ul class="right hide-on-med-and-down">
-        		<li><a class="navButton" href="index.html">EXIT</a></li>
+        		<li><a class="navButton modal-trigger" href="#exitModal">EXIT</a></li>
       		</ul>
       		<ul id="nav-mobile" class="side-nav">
-        		<li><a class="navButton" href="index.html">EXIT</a></li>
+        		<li><a class="navButton modal-trigger" href="#exitModal">EXIT</a></li>
       		</ul>
       		<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     	</div>
@@ -55,9 +55,75 @@
           			<input id="first_name" type="text" class="validate" length="10" maxLength="10" onkeydown="enterOpinion(event, this)">
           			<label for="first_name">Enter the your opinion.</label>
         		</div>
+            <div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
+                <a class="waves-effect waves-light btn" onclick="Materialize.toast('의견그룹이 아래 표에 추가되었습니다.', 4000)"><i class="material-icons left">no_sim</i>의견 삭제</a>
+            </div>
+            <div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
+                <a class="waves-effect waves-light btn" onclick="setMerge()"><i class="material-icons left">play_arrow</i>다음 단계로</a>
+            </div>
       		</div>
+          <hr>
+          <div class="row">
+
+          </div>
     	</div>
   	</div>
+
+<!-- 그룹화된 의견들이 모이는 표 -->
+<div style="padding-right: 200px; padding-left: 200px">
+  <ul class="collection">
+  <form id="groupedOpinion">
+    <li class="collection-item avatar">
+      <span class="title">Title</span>
+      <p>First Line <br>
+         Second Line
+      </p>
+      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
+    </li>
+    <li class="collection-item avatar">
+      <span class="title">Title</span>
+      <p>First Line <br>
+         Second Line
+      </p>
+      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
+    </li>
+    <li class="collection-item avatar">
+      <span class="title">Title</span>
+      <p>First Line <br>
+         Second Line
+      </p>
+      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
+    </li>
+    <li class="collection-item avatar">
+      <span class="title">Title</span>
+      <p>First Line <br>
+         Second Line
+      </p>
+      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
+    </li>
+  </form>
+  </ul>
+</div>
+
+  <!-- 입장 하기 modal -->
+  <div id="exitModal" class="modal modal-footer">
+    <div class="modal-content">
+      <h5>나가기</h5>
+      <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <p>브레인스토밍 진행중입니다. 정말로 나가시겠습니까?</p>
+        </div>
+      </div>
+    </form>
+  </div>
+    </div>
+    <div class="modal-footer">
+      <a href="index.html" class="modal-action modal-close waves-effect waves-green btn-flat">예</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
+    </div>
+  </div>
 
 	<!-- Scripts -->
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.3/fabric.min.js"></script>
@@ -68,22 +134,39 @@
   	<script src="js/IdeaBoard.js"></script>
   	<script>
   		function enterOpinion (event, input) {
-  			var isEntered = (event.keyCode == 13)?  true : false;
+  			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
 
   			if (isEntered) {
-  				add(this);
-  				console.log(input.value);
+  				add(this, input.value);
   				input.value = "";
   			}
   		}
+
   		function enterMessage (event, input) {
-  			var isEntered = (event.keyCode == 13)?  true : false;
+  			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
 
   			if (isEntered) {
-  				console.log(input.value);
+          var json = {
+            name:"",
+            message:input.value
+          };
+
+          //서버로 메시지 전송 작업
+          //send(json);
   				input.value = "";
   			}
   		}
+
+      function setMerge () {
+        var mergedOpinions = merge();
+        console.log(mergedOpinions);
+        for (var temp in mergedOpinions)
+          console.log(temp);
+      }
+
+      $(document).ready(function() { //is show modal
+        $('.modal').modal();
+      });
   	</script>
 </body>
 </html>

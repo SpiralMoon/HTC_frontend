@@ -9,7 +9,7 @@
 	canvas.setWidth(canvasWidth);
 
 
-	function add (json) {
+	function add (json, title) {
 
 		var leftPos = Math.floor(Math.random() * 600) + 1;  // returns a number
 		var topPos = Math.floor(Math.random() * 450) + 1;  // returns a number
@@ -25,7 +25,7 @@
 		});
 
 		//의견내용 데이터 추가
-		var content = new fabric.Text('의견내용', { 
+		var content = new fabric.Text(title, { 
     		left: rect.left,
     		top: rect.top, 
     		fill: 'white',
@@ -70,8 +70,9 @@
 	function merge () {	
 
  		var mergeGroup = new fabric.Group([canvas.getActiveGroup()]);
-		canvas.add(mergeGroup);
 		remove();
+
+		return mergeGroup;
 	}
 
 	function getRandomColor () {
