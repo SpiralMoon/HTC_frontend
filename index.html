@@ -142,7 +142,7 @@
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="brown-text text-lighten-3 waves-effect" href="https://github.com/babyHyeri/HTC"> Programmer Jinho and Junseok</a>
+      Developed by <a class="brown-text text-lighten-3 waves-effect" href="https://github.com/babyHyeri/HTC"> Jinho and Junseok</a>
       </div>
     </div>
   </footer>
@@ -152,40 +152,21 @@
     <div class="modal-content">
       <h4>방 만들기</h4>
       <div class="row">
-    <form class="col s12">
+    <form id="createForm" method="post" class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <input id="first_name" type="text" class="validate" length="30" maxlength="30">
-          <label for="first_name">방 제목</label>
+          <input id="title" name="TITLE" type="text" class="validate" length="30" maxlength="30">
+          <label for="title">방 제목</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s6">
-          <input id="first_name" type="text" class="validate" length="15" maxlength="15">
-          <label for="first_name">닉네임</label>
+          <input id="nickname" name="NICKNAME" type="text" class="validate" length="15" maxlength="15">
+          <label for="nickname">닉네임</label>
         </div>
         <div class="input-field col s6">
-          <input id="first_name" type="number" class="validate" min="2" max="4" placeholder="2 ~ 4명">
-          <label for="first_name">최대 인원</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s4">
-          <form action="#">
-            <p>
-              <input type="checkbox" id="timerCheckBox"/>
-              <label for="timerCheckBox">제한시간</label>
-            </p>
-          </form>
-        </div>
-        <div class="input-field col s8">
-          <select disabled>
-            <option value="" disabled selected>00:00</option>
-            <option value="1">10:00</option>
-            <option value="2">20:00</option>
-            <option value="3">30:00</option>
-          </select>
-          <label></label>
+          <input id="maxPeople" name="MAXPEOPLE" type="number" class="validate" min="2" max="4" placeholder="2 ~ 4명">
+          <label for="maxPeople">최대 인원</label>
         </div>
       </div>
     </form>
@@ -202,15 +183,15 @@
     <div class="modal-content">
       <h4>입장 하기</h4>
       <div class="row">
-    <form class="col s12">
+    <form id="joinForm" method="post" class="col s12">
       <div class="row">
         <div class="input-field col s6">
-          <input id="first_name" type="text" class="validate">
-          <label for="first_name">닉네임</label>
+          <input id="nickname" name="NICKNAME" type="text" class="validate">
+          <label for="nickname">닉네임</label>
         </div>
         <div class="input-field col s6">
-          <input id="first_name" type="text" class="validate">
-          <label for="first_name">초대코드</label>
+          <input id="roomCode" name="ROOMCODE" type="text" class="validate">
+          <label for="roomCode">초대코드</label>
         </div>
       </div>
     </form>

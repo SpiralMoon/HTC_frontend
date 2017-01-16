@@ -1,7 +1,5 @@
-var chattingList = document.getElementById('chattingInput');
+var chattingList = document.getElementById('chattingList');
 
-function addChatContent (json) {
-	// json.name;
-	// json.content;
-	chattingList.value += json.name + json.content; //채팅 내역 추가
+function addChatMessage (json) {
+	chattingList.value += json.name + json.message; //채팅 내역 추가
 }

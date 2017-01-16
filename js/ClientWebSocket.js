@@ -5,8 +5,10 @@ webSocket.onmessage = function (event) {
 
 	switch (event.patternCode) {
 		case 1: //채팅
+		addChatMessage(event.data);
 		break;
-		case 2: //의견도형
+		case 2: //의견추가
+		add(event.data);
 		break;
 		case 3:
 		break;

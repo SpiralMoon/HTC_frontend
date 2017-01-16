@@ -36,7 +36,7 @@
             <div class="col s3 center">
           		  <h3><i class="mdi-content-send brown-text"></i></h3>
           			<h4>Chatting room</h4>
-          			<input type="text" value="??? joined." disabled
+          			<input id="chattingList" type="text" value="??? joined." disabled
           			style="width:100%; height:500px; border:1px solid; border-color: black; ">
         		</div>
         		<div class="col s9 center">
@@ -72,7 +72,6 @@
 <!-- 그룹화된 의견들이 모이는 표 -->
 <div style="padding-right: 200px; padding-left: 200px">
   <ul class="collection">
-  <form id="groupedOpinion">
     <li class="collection-item avatar">
       <span class="title">Title</span>
       <p>First Line <br>
@@ -101,7 +100,6 @@
       </p>
       <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
     </li>
-  </form>
   </ul>
 </div>
 
@@ -128,45 +126,53 @@
 	<!-- Scripts -->
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.3/fabric.min.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  	<script src="js/materialize.js"></script>
-  	<script src="js/init.js"></script>
-  	<script src="js/ClientWebSocket.js"></script>
-  	<script src="js/IdeaBoard.js"></script>
-  	<script>
-  		function enterOpinion (event, input) {
-  			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
+	<script src="js/materialize.js"></script>
+	<script src="js/init.js"></script>
+	<script src="js/ClientWebSocket.js"></script>
+  <script src="js/Chatting.js"></script>
+	<script src="js/IdeaBoard.js"></script>
+	<script>
+		function enterOpinion (event, input) {
+			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
 
-  			if (isEntered) {
-  				add(this, input.value);
-  				input.value = "";
-  			}
-  		}
+			if (isEntered) {
+        var data = setOpinion(input.value); //입력한 데이터를 바탕으로 의견텍스트를 생성 -> 중복인 경우 null
 
-  		function enterMessage (event, input) {
-  			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
-
-  			if (isEntered) {
+        if (data != null) { //이미 중복된 의견이면 의견을 전송하지 않음
           var json = {
+            patternCode:2,
+            id:"",
+            data:data
+          };
+          // send(json); //서버로 의견 전송 작업
+          add (json.data); //아이디어를 그리는 임시 코드
+        }
+				input.value = "";
+			}
+		}
+
+		function enterMessage (event, input) {
+			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
+
+			if (isEntered) {
+        var json = {
+          patternCode:1,
+          id:"",
+          data : {
             name:"",
             message:input.value
-          };
+          }
+        };
 
-          //서버로 메시지 전송 작업
-          //send(json);
-  				input.value = "";
-  			}
-  		}
+        //send(json); //서버로 메시지 전송 작업
+        addChatMessage(json.data); //채팅 받는 임시 코드
+				input.value = "";
+			}
+		}
 
-      function setMerge () {
-        var mergedOpinions = merge();
-        console.log(mergedOpinions);
-        for (var temp in mergedOpinions)
-          console.log(temp);
-      }
-
-      $(document).ready(function() { //is show modal
-        $('.modal').modal();
-      });
-  	</script>
+    $(document).ready(function() { //is show modal
+      $('.modal').modal();
+    });
+	</script>
 </body>
 </html>
