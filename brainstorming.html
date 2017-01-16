@@ -56,10 +56,10 @@
           			<label for="first_name">Enter the your opinion.</label>
         		</div>
             <div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
-                <a class="waves-effect waves-light btn" onclick="Materialize.toast('의견그룹이 아래 표에 추가되었습니다.', 4000)"><i class="material-icons left">no_sim</i>의견 삭제</a>
+                <a class="waves-effect waves-light btn" onclick="removeOpinion()"><i class="material-icons left">no_sim</i>의견 삭제</a>
             </div>
             <div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
-                <a class="waves-effect waves-light btn" onclick="setMerge()"><i class="material-icons left">play_arrow</i>다음 단계로</a>
+                <a class="waves-effect waves-light btn modal-trigger" href="#mergeModal"><i class="material-icons left">play_arrow</i>다음 단계로(임시 그룹화 버튼)</a>
             </div>
       		</div>
           <hr>
@@ -71,35 +71,7 @@
 
 <!-- 그룹화된 의견들이 모이는 표 -->
 <div style="padding-right: 200px; padding-left: 200px">
-  <ul class="collection">
-    <li class="collection-item avatar">
-      <span class="title">Title</span>
-      <p>First Line <br>
-         Second Line
-      </p>
-      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
-    </li>
-    <li class="collection-item avatar">
-      <span class="title">Title</span>
-      <p>First Line <br>
-         Second Line
-      </p>
-      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
-    </li>
-    <li class="collection-item avatar">
-      <span class="title">Title</span>
-      <p>First Line <br>
-         Second Line
-      </p>
-      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
-    </li>
-    <li class="collection-item avatar">
-      <span class="title">Title</span>
-      <p>First Line <br>
-         Second Line
-      </p>
-      <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
-    </li>
+  <ul id="mergedOpinions" class="collection">
   </ul>
 </div>
 
@@ -108,7 +80,7 @@
     <div class="modal-content">
       <h5>나가기</h5>
       <div class="row">
-    <form class="col s12">
+    <form id="exitForm" class="col s12">
       <div class="row">
         <div class="input-field col s12">
           <p>브레인스토밍 진행중입니다. 정말로 나가시겠습니까?</p>
@@ -119,6 +91,37 @@
     </div>
     <div class="modal-footer">
       <a href="index.html" class="modal-action modal-close waves-effect waves-green btn-flat">예</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
+    </div>
+  </div>
+
+  <!-- 입장 하기 modal -->
+  <div id="mergeModal" class="modal modal-footer">
+    <div class="modal-content">
+      <h5>의견 그룹화</h5>
+      <div class="row">
+        <form id="exitForm" class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <div class="row">
+            <div class="input-field col s6">
+              <input id="mergeTitle" name="mergeTitle" type="text" class="validate">
+              <label for="mergeTitle">그룹명</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="mergeComent" name="mergeComent" type="text" class="validate" placeholder="의견그룹에 의미를 부여합니다.">
+              <label for="mergeComent">코멘트</label>
+            </div>
+          </div>
+          <p>설명 : 선택한 의견들을 그룹화하여 아래 표에 추가합니다. 성격이 비슷하거나 연관성있는 단어끼리 그룹화하세요. 그룹화된 의견은 수정하거나 삭제할 수 없습니다.</p>
+        </div>
+      </div>
+    </form> 
+  </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat"
+      onclick="setMerge(document.getElementById('mergeTitle').value, document.getElementById('mergeComent').value)">예</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
     </div>
   </div>

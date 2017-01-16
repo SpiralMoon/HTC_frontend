@@ -30,16 +30,44 @@
 		return text;
 	}
 
-	function setMerge () {
-		var mergeGroup = new fabric.Group([canvas.getActiveGroup()]);
+	function setMerge (title, coment) {
+		var data = {
+			title:title,
+			coment:coment,
+			mergeGroup:new fabric.Group([canvas.getActiveGroup()])
+		};
+
 		var json = {
 			patternCode : 5,
 			id : "",
-			data : mergeGroup
+			data : data
 		};
 
 		// send(json);
 		merge(json.data);
+	}
+
+	function removeOpinion () {
+		//선택한 오브젝트를 삭제
+
+		var selectedObject = canvas.getActiveObject();
+		var selectedGroup = canvas.getActiveGroup();
+
+		if (selectedObject) //단일 대상 삭제
+		{
+			var json = {
+				patternCode : 4,
+				id:"",
+				data: selectedObject
+			};
+
+			// send(json);
+			remove(json.data);
+		}
+
+		else if (selectedGroup) //드래그된 그룹은 삭제할 수 없도록 표시
+			Materialize.toast('드래그된 그룹은 삭제할 수 없습니다!', 4000);
+			
 	}
 
 	/*
@@ -49,22 +77,12 @@
 		canvas.add(json);
 	}
 
-	function remove () {
-		//선택한 오브젝트를 삭제
+	function remove (json) {
 
-		var selectedObject = canvas.getActiveObject();
-		var selectedGroup = canvas.getActiveGroup();
-
-		if (selectedObject) //단일 대상 삭제
-			canvas.remove(selectedObject);
-
-		else if (selectedGroup) //드래그된 그룹 삭제
-			var temp = selectedGroup.getObjects();
-			canvas.discardActiveGroup();
-
-			temp.forEach(function(object) {
-            	canvas.remove(object);
-            });
+		for (var i = 0; i < canvas._objects.length; i++)
+			if (canvas._objects[i].text == json.text) {
+				canvas.remove(json);
+			}
 	}
 
 	function clear () {
@@ -73,12 +91,27 @@
 
 	function merge (json) {	
 
- 		console.log(json._objects[0]._objects);
+		var mergedOpinions =  document.getElementById("mergedOpinions"); //그룹화 표
+		var mergedData = "";
+		var html = "";
 
-		for (var i = 0; i < json._objects[0]._objects.length; i++)
+		for (var i = 0; i < json.mergeGroup._objects[0]._objects.length; i++) //2중 for문을 써서 canvas의 멤버와 매치 시켜야하는 부분
 		{
-			canvas.remove(json._objects[0]._objects[i]); //그룹화된 의견을 캔버스에서 삭제하고 하단 표로 이동시킴
+			mergedData += json.mergeGroup._objects[0]._objects[i].text + ", ";
+			canvas.remove(json.mergeGroup._objects[0]._objects[i]); //하단 표로 이동시킬 그룹화된 의견을 캔버스에서 삭제
 		}
+
+		html += '<li class="collection-item avatar">';
+		html += '<span class="title">' + json.title + '</span>';
+		html += '<p>' + mergedData + ' <br>';
+		html += json.coment;
+		html += '</p>';
+		html += '<a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>';
+		html += '</li>';
+
+		mergedOpinions.innerHTML += html;
+
+		Materialize.toast('의견그룹 ' + json.title + ' 이(가) 아래 표에 추가되었습니다.', 4000);
 	}
 
 
@@ -90,66 +123,3 @@
 	function getRandomY () {
 		return Math.floor(Math.random() * 450) + 1;  // returns a Y
 	}
-
-	// function getRandomColor () {
-
-	// 	var color = Math.floor(Math.random() * 17) + 1;
-
-	// 	switch(color) {
-	// 		case 1:
-	// 		color = "aqua";
-	// 		break;
-	// 		case 2:
-	// 		color = "black";
-	// 		break;
-	// 		case 3:
-	// 		color = "blue";
-	// 		break;
-	// 		case 4:
-	// 		color = "fuchsia";
-	// 		break;
-	// 		case 5:
-	// 		color = "gray";
-	// 		break;
-	// 		case 6:
-	// 		color = "green";
-	// 		break;
-	// 		case 7:
-	// 		color = "lime";
-	// 		break;
-	// 		case 8:
-	// 		color = "maroon";
-	// 		break;
-	// 		case 9:
-	// 		color = "navy";
-	// 		break;
-	// 		case 10:
-	// 		color = "olive";
-	// 		break;
-	// 		case 11:
-	// 		color = "orange";
-	// 		break;
-	// 		case 12:
-	// 		color = "purple";
-	// 		break;
-	// 		case 13:
-	// 		color = "red";
-	// 		break;
-	// 		case 14:
-	// 		color = "silver";
-	// 		break;
-	// 		case 15:
-	// 		color = "teal";
-	// 		break;
-	// 		case 16:
-	// 		color = "white"; //배경이 하얀색이라 좋지 않음
-	// 		break;
-	// 		case 17:
-	// 		color = "yellow";
-	// 		break;
-	// 		default:
-	// 		break;
-	// 	}
-
-	// 	return color;
-	// }

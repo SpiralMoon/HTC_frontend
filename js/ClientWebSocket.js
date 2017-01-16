@@ -12,9 +12,11 @@ webSocket.onmessage = function (event) {
 		break;
 		case 3:
 		break;
-		case 4:
+		case 4: //의견 삭제
+		remove(event.data);
 		break;
-		case 5:
+		case 5: //의견 그룹화 (화면 하단 표에 추가)
+		merge(event.data);
 		break;
 		case 6:
 		break;
