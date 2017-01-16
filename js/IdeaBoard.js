@@ -64,9 +64,10 @@
 			// send(json);
 			remove(json.data);
 		}
-
 		else if (selectedGroup) //드래그된 그룹은 삭제할 수 없도록 표시
-			Materialize.toast('드래그된 그룹은 삭제할 수 없습니다!', 4000);
+			Materialize.toast('여러개의 의견은 동시에 삭제할 수 없습니다!', 4000);
+		else //의견을 선택하지 않고 삭제 요청을 하는 경우
+			Materialize.toast('삭제할 의견을 먼저 선택해주세요!', 4000);
 			
 	}
 
