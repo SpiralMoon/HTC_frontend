@@ -202,18 +202,16 @@
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() { //is show modal
-      $('.modal').modal();
-    });
+    var $jq = jQuery.noConflict(); //충돌 방지
 
-    $(document).ready(function() {
-        $('select').material_select();
+    $jq(document).ready(function() { //is show modal
+      $jq('.modal').modal();
     });
     
-    $(document).ready(function($) { //is smooth moving
-      $(".navButton").click(function(event) {     
+    $jq(document).ready(function($) { //is smooth moving
+      $jq(".navButton").click(function(event) {     
         event.preventDefault();
-          $('html, body').animate({scrollTop:$(this.hash).offset().top}, 500);
+          $jq('html, body').animate({scrollTop:$jq(this.hash).offset().top}, 500);
       });
     });
   </script>

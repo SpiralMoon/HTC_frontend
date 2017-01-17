@@ -68,7 +68,37 @@
 			Materialize.toast('여러개의 의견은 동시에 삭제할 수 없습니다!', 4000);
 		else //의견을 선택하지 않고 삭제 요청을 하는 경우
 			Materialize.toast('삭제할 의견을 먼저 선택해주세요!', 4000);
+	}
+
+	function modifyOpinion () {
+
+		// var panning = false;
+
+		canvas.on('mouse:up', function (e) {
+		    // panning = false;
+
+		    var selectedObject = canvas.getActiveObject();
+
+			if (e && e.e && selectedObject != null) { //panning && 
+				var json = {
+					patternCode:3,
+					id:"",
+					data: selectedObject
+				};
+
+				// send(json);
+				modify(json.data);
+			}
+		});
+		canvas.on('mouse:out', function (e) {
+		    // panning = false;
+		});
+		canvas.on('mouse:down', function (e) {
+		    // panning = true;
+		});
+		canvas.on('mouse:move', function(e) {
 			
+		});
 	}
 
 	/*
@@ -79,7 +109,6 @@
 	}
 
 	function remove (json) {
-
 		for (var i = 0; i < canvas._objects.length; i++)
 			if (canvas._objects[i].text == json.text) {
 				canvas.remove(json);
@@ -115,12 +144,17 @@
 		Materialize.toast('의견그룹 ' + json.title + ' 이(가) 아래 표에 추가되었습니다.', 4000);
 	}
 
+	function modify (json) {
+		remove(json);
+		canvas.add(json);
+	}
+
 
 	//---------------------------------------------------------------
 	function getRandomX () {
-		return  Math.floor(Math.random() * 600) + 1;  // returns a X
+		return  Math.floor(Math.random() * 900) + 1;  // returns a X
 	}
 
 	function getRandomY () {
-		return Math.floor(Math.random() * 450) + 1;  // returns a Y
+		return Math.floor(Math.random() * 390) + 1;  // returns a Y
 	}
