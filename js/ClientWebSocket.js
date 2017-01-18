@@ -32,10 +32,26 @@ webSocket.onmessage = function (event) {
 } //데이터 수신
 
 webSocket.onopen = function (event) {
+	var json = {
+		patternCode:9,
+		id:"",
+		nickname:""
+	}
+
+	send(json);
+
 	console.log("서버 연결 완료");
 }
 webSocket.onclose = function (event) {
-	console.log("서버 연결 종료");
+	var json = {
+		patternCode:10,
+		id:"",
+		nickname:""
+	}
+
+	send(json);
+
+	console.log("서버 연결 해제");
 }
 
 <!-- 데이터 송신 -->
