@@ -28,48 +28,64 @@
 
 	<div class="container"  style="width: 100%">
   	<div class="section">
-  		<!-- <form action="#">
-  			<p class="range-field">
-    		  <input type="range" id="test5" min="0" max="100" value="20" disabled />
-  			</p>
-			</form> -->
-    		<div class="row">
-          <div class="col s3 center">
-        		  <h3><i class="mdi-content-send brown-text"></i></h3>
-        			<h5>Chatting room</h5>
-        			<div id="chattingList" type="text" value="??? joined." disabled
-        			style="width:100%; height:400px; border:1px solid; border-color: black; overflow:auto;">
-                <p align="left">??? joined.</p>
-                <p align="right" style="color: red;">나 : 빼애애애애애애애액!!</p>
-              </div>
-      		</div>
-      		<div class="col s9 center">
-        			<h3><i class="mdi-content-send brown-text"></i></h3>
-        			<h5>Idea Sketch Board</h5>
-        			<canvas id="ideaBoard" style="width:100%; height:400px; border:1px solid; border-color: black; ">
-        			</canvas>
-      		</div>
-    		</div>
-    		<div class="row">
-      		<div class="input-field col s3">
-        			<input id="first_name" type="text" class="validate" length="30" maxLength="30" onkeydown="enterMessage(event, this)">
-        			<label for="first_name">Enter the message.</label>
-      		</div>
-      		<div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
-        			<input id="first_name" type="text" class="validate" length="10" maxLength="10" onkeydown="enterOpinion(event, this)">
-        			<label for="first_name">Enter the your opinion.</label>
-      		</div>
-          <div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
-              <a class="waves-effect waves-light btn" onclick="removeOpinion()"><i class="material-icons left">no_sim</i>의견 삭제</a>
-          </div>
-          <div class="input-field col s3"> <!-- 의견도형을 그리는 지옥의 소스코드 -->
-              <a class="waves-effect waves-light btn modal-trigger" href="#mergeModal"><i class="material-icons left">play_arrow</i>다음 단계로(임시 그룹화 버튼)</a>
-          </div>
-    		</div>
-        <hr>
-        <div class="row">
-
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3 "><a class="active" href="#tab1">브레인스토밍</a></li>
+            <li class="tab col s3 "><a href="#tab2">투표 개설</a></li>
+            <li class="tab col s3 "><a href="#tab3">투표 진행</a></li>
+            <li class="tab col s3 "><a href="#tab4">회의 결과</a></li>
+          </ul>
         </div>
+        <div class="col s3"> <!-- 채팅방 => 항상 표시되는 공간 -->
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h5 class="center">Chatting room</h5>
+          <div id="chattingList" type="text" value="??? joined." disabled
+          style="width:100%; height:400px; border:1px solid; border-color: black; overflow:auto;">
+            <p align="left">??? joined.</p>
+            <p align="right" style="color: red;">나 : 빼애애애애애애애액!!</p>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <input id="first_name" type="text" class="validate" length="30" maxLength="30" onkeydown="enterMessage(event, this)">
+                <label for="first_name">Enter the message.</label>
+            </div>
+          </div>
+        </div>
+        <div id="tab1" class="col s9"> <!-- 브레인스토밍 탭 -->
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h5 class="center">Idea Sketch Board</h5>
+          <canvas id="ideaBoard" style="width:100%; height:400px; border:1px solid; border-color: black; ">
+          </canvas>
+          <div class="row">
+            <div class="input-field col s3"> 
+              <input id="first_name" type="text" class="validate" length="10" maxLength="10" onkeydown="enterOpinion(event, this)">
+              <label for="first_name">Enter the your opinion.</label>
+            </div>
+            <div class="input-field col s3 center">
+              <a class="waves-effect waves-light btn-large" onclick="removeOpinion()"><i class="material-icons left">no_sim</i>의견 삭제</a>
+            </div>
+            <div class="input-field col s3 center">
+              <a class="waves-effect waves-light btn-large modal-trigger" href="#mergeModal"><i class="material-icons left">language</i>의견 그룹화</a>
+            </div>
+            <div class="input-field col s3 center">
+              <a class="waves-effect waves-light btn-large modal-trigger" href="#nextModal1"><i class="material-icons left">play_arrow</i>다음 단계로</a>
+            </div>
+          </div>
+        </div>
+        <div id="tab2" class="col s9 center"> <!-- 투표 개설&대기 탭-->
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h5>Vote create&amp;waiting Board</h5>
+          <div id="" style="width:100%; height:400px; border:1px solid; border-color: black; ">
+          </div>
+          <div class="row">
+            <!-- 투표 개설 버튼이 들어갈 곳 -->
+          </div>
+        </div>
+        <div id="tab3" class="col s9 center"></div>
+        <div id="tab4" class="col s9 center"></div>
+      </div>
+      <hr>
   	</div>
 	</div>
 
@@ -99,7 +115,7 @@
     </div>
   </div>
 
-  <!-- 입장 하기 modal -->
+  <!-- 의견 그룹화 modal -->
   <div id="mergeModal" class="modal modal-footer">
     <div class="modal-content">
       <h5>의견 그룹화</h5>
@@ -113,8 +129,8 @@
                   <label for="mergeTitle">그룹명</label>
                 </div>
                 <div class="input-field col s6">
-                  <input id="mergeComent" name="mergeComent" type="text" class="validate" placeholder="의견그룹에 의미를 부여합니다.">
-                  <label for="mergeComent">코멘트</label>
+                  <input id="mergeComment" name="mergeComment" type="text" class="validate" placeholder="의견그룹에 의미를 부여합니다.">
+                  <label for="mergeComemnt">코멘트</label>
                 </div>
               </div>
               <p>설명 : 선택한 의견들을 그룹화하여 아래 표에 추가합니다. 성격이 비슷하거나 연관성있는 단어끼리 그룹화하세요. 그룹화된 의견은 수정하거나 삭제할 수 없습니다.</p>
@@ -125,7 +141,27 @@
     </div>
     <div class="modal-footer">
       <a class="modal-action modal-close waves-effect waves-green btn-flat"
-      onclick="setMerge(document.getElementById('mergeTitle').value, document.getElementById('mergeComent').value)">예</a>
+      onclick="setMerge(document.getElementById('mergeTitle').value, document.getElementById('mergeComment').value)">예</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
+    </div>
+  </div>
+
+  <!-- 브레인스토밍 -> 투표 개설&대기 탭으로 넘어가는 modal -->
+  <div id="nextModal1" class="modal modal-footer">
+    <div class="modal-content">
+      <h5>다음 단계로</h5>
+      <div class="row">
+        <form id="" class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <p>브레인스토밍을 마치고 다음 단계로 진행합니다. 이 권한은 방장에게만 주어집니다. 반드시 필요한 의견들이 모두 그룹화 되었을 때 실행하세요.</p>
+            </div>
+          </div>
+        </form> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat" onclick="next(1)">예</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
     </div>
   </div>
@@ -182,9 +218,26 @@
 
     var $jq = jQuery.noConflict(); //충돌 방지
 
-    $jq(document).ready(function() { //is show modal
+    $jq(document).ready(function() {
       $jq('.modal').modal();
     });
+
+    $jq(document).ready(function() {
+      $jq('ul.tabs').tabs();
+    });
+
+    //새로고침 방지
+    document.onkeydown = function(e) {
+      key = (e) ? e.keyCode : event.keyCode;
+      if(key==116 || (key == 37 && event.altKey == true)) {
+        if(e) {
+          e.preventDefault();
+        } else {
+          event.keyCode = 0;
+          event.returnValue = false;
+        }
+      }
+    }
 
 	</script>
 </body>

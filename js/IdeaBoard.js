@@ -30,10 +30,10 @@
 		return text;
 	}
 
-	function setMerge (title, coment) {
+	function setMerge (title, comment) {
 		var data = {
 			title:title,
-			coment:coment,
+			comment:comment,
 			mergeGroup:new fabric.Group([canvas.getActiveGroup()])
 		};
 
@@ -101,8 +101,39 @@
 		});
 	}
 
+	function setVote (voteTitle, isMultiple) {
+		var itemList = document.getElementById("mergedOpinions").getElementsByTagName("li");
+		var titles = new Array();
+		var opinions = new Array();
+		var comments = new Array();
+
+
+		for (var i = 0; i < itemList.length; i++) {
+			titles[i] = itemList[i].getElementsByTagName("span")[0].innerHTML;
+			var temp = itemList[i].getElementsByTagName("p")[0].innerHTML.split("<br>");
+			opinions[i] = temp[0];
+			comments[i] = temp[1];
+		}
+
+		var vote = {
+			voteTitle:voteTitle, //투표 제목
+			multiple:isMultiple, //중복 투표 허용
+			title:titles,
+			comment:comments,
+			opinion:opinions,
+		}
+		var json = {
+			patternCode:6,
+			id:"",
+			data:vote
+		}
+
+		// send(json);
+		createVote(json.data);
+	}
+
 	/*
-	* canvas 조작 파트
+	* ideaBoard 조작 파트
 	*/
 	function add (json) { //json으로부터 받아와 의견 데이터를 canvas에 그리는 함수
 		canvas.add(json);
@@ -132,11 +163,11 @@
 		}
 
 		html += '<li class="collection-item avatar">';
-		html += '<span class="title">' + json.title + '</span>';
-		html += '<p>' + mergedData + ' <br>';
-		html += json.coment;
+		html += '<span class="title" style="font-size:30px;">' + json.title + '</span>';
+		html += '<p>' + mergedData + '<br>';
+		html += json.comment;
 		html += '</p>';
-		html += '<a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>';
+		html += '<a href="#!" class="secondary-content"></a>';
 		html += '</li>';
 
 		mergedOpinions.innerHTML += html;
@@ -149,6 +180,45 @@
 		canvas.add(json);
 	}
 
+	function createVote (json) {
+		console.log(json.voteTitle);
+		console.log(json.title);
+		console.log(json.comment);
+		console.log(json.opinion);
+		console.log(json.multiple);
+
+		//투표 차트 생성
+	}
+
+	function changeTab (json) {
+		switch (json.modalNumber) {
+			case 1: //브레인스토밍 -> 투표 개설&대기
+				$jq('ul.tabs').tabs('select_tab', 'tab2');
+			break;
+			case 2: //투표 개설&대기 -> 투표 진행
+				$jq('ul.tabs').tabs('select_tab', 'tab3');
+			break;
+			case 3: //투표 진행 -> 회의 결과
+				$jq('ul.tabs').tabs('select_tab', 'tab4');
+			break;
+			default:
+			break;
+		}
+	}
+
+	/*
+	* 다음 단계로 넘어가는 파트
+	*/
+	function next (modalNumber) {
+		var json = {
+			patternCode:11,
+			id:"",
+			modalNumber:modalNumber
+		}
+
+		// send(json);
+		changeTab(json);
+	}
 
 	//---------------------------------------------------------------
 	function getRandomX () {
