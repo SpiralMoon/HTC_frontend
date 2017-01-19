@@ -38,11 +38,12 @@
 		};
 
 		var json = {
-			patternCode : 5,
+			patternCode : "5",
 			id : "",
 			data : data
 		};
 
+		// json = JSON.stringify(json);
 		// send(json);
 		merge(json.data);
 	}
@@ -56,11 +57,12 @@
 		if (selectedObject) //단일 대상 삭제
 		{
 			var json = {
-				patternCode : 4,
+				patternCode : "4",
 				id:"",
 				data: selectedObject
 			};
 
+			// json = JSON.stringify(json);
 			// send(json);
 			remove(json.data);
 		}
@@ -72,20 +74,20 @@
 
 	function modifyOpinion () {
 
-		// var panning = false;
+		var selectedObject;
 
 		canvas.on('mouse:up', function (e) {
 		    // panning = false;
 
-		    var selectedObject = canvas.getActiveObject();
 
 			if (e && e.e && selectedObject != null) { //panning && 
 				var json = {
-					patternCode:3,
+					patternCode:"3",
 					id:"",
 					data: selectedObject
 				};
 
+				// json = JSON.stringify(json);
 				// send(json);
 				modify(json.data);
 			}
@@ -97,7 +99,7 @@
 		    // panning = true;
 		});
 		canvas.on('mouse:move', function(e) {
-			
+			selectedObject = canvas.getActiveObject();
 		});
 	}
 
@@ -123,11 +125,12 @@
 			opinion:opinions,
 		}
 		var json = {
-			patternCode:6,
+			patternCode:"6",
 			id:"",
 			data:vote
 		}
 
+		// json = JSON.stringify(json);
 		// send(json);
 		createVote(json.data);
 	}
@@ -162,6 +165,8 @@
 			canvas.remove(json.mergeGroup._objects[0]._objects[i]); //하단 표로 이동시킬 그룹화된 의견을 캔버스에서 삭제
 		}
 
+		mergedData = mergedData.slice(0, mergedData.length - 2); //"..., "에서 , 를 잘라냄
+
 		html += '<li class="collection-item">';
 		html += '<span class="title" style="font-size:30px;">' + json.title + '</span>';
 		html += '<p>' + mergedData + '<br>';
@@ -192,7 +197,27 @@
 			voteTitle.innerHTML = "주제 : " + json.voteTitle;
 
 		//투표 차트 생성
-		var isMultiple = (json.multiple == 'on')? true : false; //중복 허용인가?
+		var voteList = document.getElementById('voteList');
+		var html = ""; //투표 각 항목
+		var isMultiple = (json.multiple == true)? true : false; //중복 허용인가?
+
+		html += '<li class="collection-item">';
+
+		for (var i = 0; i < json.title.length; i++) {
+			if (isMultiple)
+				html += '<input type="checkbox" id="list' + i + '" />';
+			else
+				html += '<input name="group1" type="radio" id="list' + i + '" class="with-gap"/>';
+
+			html += '<label for="list' + i + '" class="title" style="font-size:30px;">' + json.title[i] + '</label>';
+			html += '<p>' + json.opinion[i] + '<br>';
+			html += json.comment[i];
+			html += '</p>';
+			html += '<a href="#!" class="secondary-content"></a>';
+			html += '</li>';
+		}
+
+		voteList.innerHTML = html;
 	}
 
 	function changeTab (json) {
@@ -219,7 +244,7 @@
 	*/
 	function next (modalNumber) {
 		var json = {
-			patternCode:11,
+			patternCode:"11",
 			id:"",
 			modalNumber:modalNumber
 		}

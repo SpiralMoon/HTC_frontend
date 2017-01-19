@@ -5,25 +5,26 @@ webSocket.onmessage = function (event) {
 
 	try {
 		switch (event.patternCode) {
-			case 1: //채팅
+			case "1": //채팅
 			addChatMessage(event.data);
 			break;
-			case 2: //의견 추가
+			case "2": //의견 추가
 			add(event.data);
 			break;
-			case 3: //의견 수정
+			case "3": //의견 수정
 			modify(event.data);
 			break;
-			case 4: //의견 삭제
+			case "4": //의견 삭제
 			remove(event.data);
 			break;
-			case 5: //의견 그룹화 (화면 하단 표에 추가)
+			case "5": //의견 그룹화 (화면 하단 표에 추가)
 			merge(event.data);
 			break;
-			case 6:
+			case "6":
 			break;
-			case 7:
+			case "7":
 			break;
+
 		}
 	}
 	catch (ex) {
@@ -33,21 +34,26 @@ webSocket.onmessage = function (event) {
 
 webSocket.onopen = function (event) {
 	var json = {
-		patternCode:9,
+		patternCode:"9",
 		id:"",
 		nickname:""
 	}
+
+	// json = JSON.stringify(json);
 
 	send(json);
 
 	console.log("서버 연결 완료");
 }
+
 webSocket.onclose = function (event) {
 	var json = {
-		patternCode:10,
+		patternCode:"10",
 		id:"",
 		nickname:""
 	}
+
+	// json = JSON.stringify(json);
 
 	send(json);
 
