@@ -9,6 +9,7 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 	<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/bargraph.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 
 <body>
@@ -73,27 +74,63 @@
             </div>
           </div>
         </div>
-        <div id="tab2" class="col s9 center"> <!-- 투표 개설&대기 탭-->
+        <div id="tab2" class="col s9 center"> <!-- 투표 개설&대기 탭 -->
           <h3><i class="mdi-content-send brown-text"></i></h3>
           <h5>Vote create&amp;waiting Board</h5>
-          <div id="" style="width:100%; height:400px; border:1px solid; border-color: black; ">
+          <div id="" style="width:100%; height:400px; border:1px solid; border-color: black; overflow:auto">
+            <div style="padding-right: 100px; padding-left: 100px">
+              <ul id="mergedOpinions" class="collection">
+              </ul>
+            </div>
           </div>
           <div class="row">
-            <!-- 투표 개설 버튼이 들어갈 곳 -->
+            <div class="input-field col s3 right">
+              <a class="waves-effect waves-light btn-large" href="#nextModal2"><i class="material-icons left">assessment</i>투표 개설</a>
+            </div>
           </div>
         </div>
-        <div id="tab3" class="col s9 center"></div>
-        <div id="tab4" class="col s9 center"></div>
+        <div id="tab3" class="col s9 center"> <!-- 투표 진행 탭 -->
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h5>Let's vote!</h5>
+          <div id="" style="width:100%; height:400px; border:1px solid; border-color: black; overflow:auto">
+            <h4>투표</h4>
+            <h6 id="topic">주제</h6>
+          </div>
+          <div class="row">
+            <div class="input-field col s3 right">
+              <a class="waves-effect waves-light btn-large" href="#nextModal3"><i class="material-icons left">pause</i>투표 종료</a>
+            </div>
+          </div>
+        </div>
+        <div id="tab4" class="col s9 center"> <!-- 투표 결과 탭 -->
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h5>Result</h5>
+          <div id="" style="width:100%; height:400px; border:1px solid; border-color: black; overflow:auto">
+            <h4>결과</h4>
+            <ul class="bargraph" style="padding-left: 100px; padding-right: 100px">
+              <li class="reddeep">XHTML / CSS</li>
+              <li class="redpink">WordPress</li>
+              <li class="pink">Illustrator</li>
+              <li class="orangered">Photoshop</li>
+              <li class="orange">SEO</li>
+              <li class="yellow">E-mail Marketing</li>
+              <li class="green">PHP</li>
+              <li class="greenbright">Javascript</li>
+              <li class="greenblue">MySQL</li>
+              <li class="blue">C++</li>
+              <li id="voteStats" style="color:black; font-style: normal;">투표 인원 : X명, 최다 득표 의견 : XXX</li>
+            </ul>
+          </div>
+          <div class="row">
+          </div>
+        </div>
       </div>
       <hr>
   	</div>
 	</div>
 
   <!-- 그룹화된 의견들이 모이는 표 -->
-  <div style="padding-right: 200px; padding-left: 200px">
-    <ul id="mergedOpinions" class="collection">
-    </ul>
-  </div>
+  
 
   <!-- 입장 하기 modal -->
   <div id="exitModal" class="modal modal-footer">
@@ -133,7 +170,8 @@
                   <label for="mergeComemnt">코멘트</label>
                 </div>
               </div>
-              <p>설명 : 선택한 의견들을 그룹화하여 아래 표에 추가합니다. 성격이 비슷하거나 연관성있는 단어끼리 그룹화하세요. 그룹화된 의견은 수정하거나 삭제할 수 없습니다.</p>
+              <p>설명 : 선택한 의견들을 그룹화하여 아래 표에 추가합니다. 성격이 비슷하거나 연관성있는 단어끼리 그룹화하세요. 그룹화된 의견들은 투표의 항목이 됩니다. 
+              그룹화된 의견은 수정하거나 삭제할 수 없습니다.</p>
             </div>
           </div>
         </form> 
@@ -154,7 +192,7 @@
         <form id="" class="col s12">
           <div class="row">
             <div class="input-field col s12">
-              <p>브레인스토밍을 마치고 다음 단계로 진행합니다. 이 권한은 방장에게만 주어집니다. 반드시 필요한 의견들이 모두 그룹화 되었을 때 실행하세요.</p>
+              <p>설명 : 브레인스토밍을 마치고 다음 단계로 진행합니다. 이 권한은 방장에게만 주어집니다. 반드시 필요한 의견들이 모두 그룹화 되었을 때 실행하세요.</p>
             </div>
           </div>
         </form> 
@@ -162,6 +200,57 @@
     </div>
     <div class="modal-footer">
       <a class="modal-action modal-close waves-effect waves-green btn-flat" onclick="next(1)">예</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
+    </div>
+  </div>
+
+  <!-- 투표 진행 -> 투표 결과 탭으로 넘어가는 modal -->
+  <div id="nextModal2" class="modal modal-footer">
+    <div class="modal-content">
+      <h5>다음 단계로</h5>
+      <div class="row">
+        <form id="" class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <div class="input-field col s12">
+                <input placeholder="브레인스토밍을 통해 얻고자 한 것을 적어주세요." id="voteTitle" type="text" class="validate" length="30" maxlength="30">
+                <label for="voteTitle">투표 제목</label>
+              </div>
+              <div class="input-field col s12">
+                <input type="checkbox" id="multiple" />
+                <label for="multiple">중복투표 허용</label>
+              </div>
+              <div class="input-field col s12">
+                <p>설명 : 투표 옵션을 선택하고 투표를 개설하여 시작합니다. 이 권한은 방장에게만 주어집니다.</p>
+              </div>
+            </div>
+          </div>
+        </form> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat"
+      onclick="next(2); setVote(document.getElementById('voteTitle').value, document.getElementById('multiple').value);">예</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
+    </div>
+  </div>
+
+  <!-- 투표 진행 -> 투표 결과 탭으로 넘어가는 modal -->
+  <div id="nextModal3" class="modal modal-footer">
+    <div class="modal-content">
+      <h5>다음 단계로</h5>
+      <div class="row">
+        <form id="" class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <p>설명 : 투표를 종료하고 모든 유저에게 결과 화면을 출력합니다. 이 권한은 방장에게만 주어집니다. 반드시 투표 갯수가 충분히 모였을 때 실행하세요.</p>
+            </div>
+          </div>
+        </form> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat" onclick="next(3)">예</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
     </div>
   </div>

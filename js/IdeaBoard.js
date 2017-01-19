@@ -162,7 +162,7 @@
 			canvas.remove(json.mergeGroup._objects[0]._objects[i]); //하단 표로 이동시킬 그룹화된 의견을 캔버스에서 삭제
 		}
 
-		html += '<li class="collection-item avatar">';
+		html += '<li class="collection-item">';
 		html += '<span class="title" style="font-size:30px;">' + json.title + '</span>';
 		html += '<p>' + mergedData + '<br>';
 		html += json.comment;
@@ -187,19 +187,27 @@
 		console.log(json.opinion);
 		console.log(json.multiple);
 
+		//투표 주제(제목) 적용
+		var voteTitle = document.getElementById('topic');
+			voteTitle.innerHTML = "주제 : " + json.voteTitle;
+
 		//투표 차트 생성
+		var isMultiple = (json.multiple == 'on')? true : false; //중복 허용인가?
 	}
 
 	function changeTab (json) {
 		switch (json.modalNumber) {
 			case 1: //브레인스토밍 -> 투표 개설&대기
 				$jq('ul.tabs').tabs('select_tab', 'tab2');
+				Materialize.toast('브레인스토밍이 종료되었습니다. 그룹화된 의견을 바탕으로 투표를 준비합니다.', 4000);
 			break;
 			case 2: //투표 개설&대기 -> 투표 진행
 				$jq('ul.tabs').tabs('select_tab', 'tab3');
+				Materialize.toast('투표가 개설되었습니다. 최대한 투표에 참여해주시기 바랍니다.', 4000);
 			break;
 			case 3: //투표 진행 -> 회의 결과
 				$jq('ul.tabs').tabs('select_tab', 'tab4');
+				Materialize.toast('투표가 종료되었습니다.', 4000);
 			break;
 			default:
 			break;
