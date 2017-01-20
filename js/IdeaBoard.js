@@ -8,6 +8,10 @@
 	canvas.setHeight(canvasHeight);
 	canvas.setWidth(canvasWidth);
 
+	//현재 투표 현황
+	var voteList = document.getElementById('voteList').getElementsByTagName('li');
+	var votedPeople = 0; //투표에 참여한 인원 수
+	var voteCount = new Array(); //각 항목에 대한 투표 수
 
 	/*
 	* 데이터 전송 파트
@@ -135,6 +139,70 @@
 		createVote(json.data);
 	}
 
+	function submitVote () {
+		//투표 차트 파싱
+		var voteList =  document.getElementById("voteList").getElementsByTagName("li"); //투표 목록 갯수
+		var choseList = new Array(); //투표한 리스트가 들어갈 변수
+
+		for (var i = 0, j = 0; i < voteList.length; i++) {
+			if (document.getElementById("list" + i).checked) {
+				choseList[j] = ("list" + i); //voteList[i].id;
+				j++;
+			}
+		}
+
+		if (choseList.length == 0) {
+			Materialize.toast('최소한 하나 이상의 항목을 선택해주세요.', 4000);
+			return;
+		}
+
+		var data = {
+			list:choseList
+		};
+
+		var json = {
+			patternCode : "7",
+			id : "",
+			data : data
+		};
+
+		// json = JSON.stringify(json);
+		// send(json);
+		receiveVote(json.data);
+	}
+
+	function finishVote () {
+
+		var title = new Array();
+		var sumCount = 0;
+
+		for (var i = 0; i < voteList.length; i++) {
+			title[i] = voteList[i].getElementsByTagName("label")[0].innerHTML;
+		}
+
+		for (var i = 0; i < voteCount.length; i++) {
+			sumCount += voteCount[i];
+		}
+
+		var data = {
+			title:title, //투표 항목명 배열
+			voteCount:voteCount, //득표수 배열
+			people:votedPeople, //총 투표 인원
+			sumCount:sumCount //총 투표수
+		};
+
+		var json = {
+			patternCode : "8",
+			id:"",
+			data:data
+		};
+
+		// json = JSON.stringify(json);
+		// send(json);
+
+		showResult(json.data);
+	}
+
 	/*
 	* ideaBoard 조작 파트
 	*/
@@ -186,12 +254,6 @@
 	}
 
 	function createVote (json) {
-		console.log(json.voteTitle);
-		console.log(json.title);
-		console.log(json.comment);
-		console.log(json.opinion);
-		console.log(json.multiple);
-
 		//투표 주제(제목) 적용
 		var voteTitle = document.getElementById('topic');
 			voteTitle.innerHTML = "주제 : " + json.voteTitle;
@@ -201,9 +263,9 @@
 		var html = ""; //투표 각 항목
 		var isMultiple = (json.multiple == true)? true : false; //중복 허용인가?
 
-		html += '<li class="collection-item">';
-
 		for (var i = 0; i < json.title.length; i++) {
+			html += '<li class="collection-item">';
+
 			if (isMultiple)
 				html += '<input type="checkbox" id="list' + i + '" />';
 			else
@@ -215,9 +277,84 @@
 			html += '</p>';
 			html += '<a href="#!" class="secondary-content"></a>';
 			html += '</li>';
+
+			voteCount[i] = 0;
 		}
 
 		voteList.innerHTML = html;
+	}
+
+	function receiveVote (json) {
+		var list = json.list; //누군가가 투표한 항목들
+
+		for (var i = 0; i < voteList.length; i++) {
+			for (var j = 0; j < list.length; j++) {
+				if(document.getElementById("list" + i).id == list[j]) {
+					voteCount[i]++;
+				}
+			}
+		}
+
+		votedPeople++;
+	} 
+
+	function showResult (json) {
+		var resultGraph = document.getElementById("resultGraph");
+		var title = json.title;
+		var count = json.voteCount;
+
+		//득표율이 높은 순으로 정렬 (내림차순)
+		for (var i = 0; i < title.length; i++) {
+			for (var j = 0; j < title.length; j++) {
+				if (count[i] > count[j]) {
+					var temp1 = count[i];
+					count[i] = count[j];
+					count[j] = temp1;
+
+					var temp2 = title[i];
+					title[i] = title[j];
+					title[j] = temp2;
+				}
+			}
+		}
+
+		console.log(title);
+		console.log(count);
+
+		var html = "";
+		var color = "reddeep";
+
+		for (var i = 0; i < title.length; i++) {
+
+			if (i % 10 == 0)
+				color = "reddeep";
+			else if (i % 10 == 1)
+				color = "redpink";
+			else if (i % 10 == 2)
+				color = "pink";
+			else if (i % 10 == 3)
+				color = "orangered";
+			else if (i % 10 == 4)
+				color = "orange";
+			else if (i % 10 == 5)
+				color = "yellow";
+			else if (i % 10 == 6)
+				color = "green";
+			else if (i % 10 == 7)
+				color = "greenbright";
+			else if (i % 10 == 8)
+				color = "greenblue";
+			else if (i % 10 == 9)
+				color = "blue";
+
+
+			html += '<li class="' + color + '" style="width:' + count[i] / json.sumCount * 100 + '%;">' + title[i] + '</li>'
+		}
+
+    	html += '<li id="voteStats" style="color:black; font-style: normal;">투표 인원 : ' +
+      			json.people + '명, 최다 득표 의견 : ' + title[0] + '</li>';
+
+		resultGraph.innerHTML = html;
 	}
 
 	function changeTab (json) {
