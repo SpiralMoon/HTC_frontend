@@ -13,6 +13,8 @@
 	var votedPeople = 0; //투표에 참여한 인원 수
 	var voteCount = new Array(); //각 항목에 대한 투표 수
 
+	var opinionList = new Array();
+
 	/*
 	* 데이터 전송 파트
 	*/
@@ -68,7 +70,7 @@
 
 			// json = JSON.stringify(json);
 			// send(json);
-			remove(json.data);
+			remove(json);
 		}
 		else if (selectedGroup) //드래그된 그룹은 삭제할 수 없도록 표시
 			Materialize.toast('여러개의 의견은 동시에 삭제할 수 없습니다!', 4000);
@@ -93,7 +95,7 @@
 
 				// json = JSON.stringify(json);
 				// send(json);
-				modify(json.data);
+				modify(json);
 			}
 		});
 		canvas.on('mouse:out', function (e) {
@@ -207,13 +209,13 @@
 	* ideaBoard 조작 파트
 	*/
 	function add (json) { //json으로부터 받아와 의견 데이터를 canvas에 그리는 함수
-		canvas.add(json);
+		canvas.add(json.data);
 	}
 
 	function remove (json) {
 		for (var i = 0; i < canvas._objects.length; i++)
-			if (canvas._objects[i].text == json.text) {
-				canvas.remove(json);
+			if (canvas._objects[i].text == json.data.text) {
+				canvas.remove(json.data);
 			}
 	}
 
@@ -227,30 +229,30 @@
 		var mergedData = "";
 		var html = "";
 
-		for (var i = 0; i < json.mergeGroup._objects[0]._objects.length; i++) //2중 for문을 써서 canvas의 멤버와 매치 시켜야하는 부분
+		for (var i = 0; i < json.data.mergeGroup._objects[0]._objects.length; i++) //2중 for문을 써서 canvas의 멤버와 매치 시켜야하는 부분
 		{
-			mergedData += json.mergeGroup._objects[0]._objects[i].text + ", ";
-			canvas.remove(json.mergeGroup._objects[0]._objects[i]); //하단 표로 이동시킬 그룹화된 의견을 캔버스에서 삭제
+			mergedData += json.data.mergeGroup._objects[0]._objects[i].text + ", ";
+			canvas.remove(json.data.mergeGroup._objects[0]._objects[i]); //하단 표로 이동시킬 그룹화된 의견을 캔버스에서 삭제
 		}
 
 		mergedData = mergedData.slice(0, mergedData.length - 2); //"..., "에서 , 를 잘라냄
 
 		html += '<li class="collection-item">';
-		html += '<span class="title" style="font-size:30px;">' + json.title + '</span>';
+		html += '<span class="title" style="font-size:30px;">' + json.data.title + '</span>';
 		html += '<p>' + mergedData + '<br>';
-		html += json.comment;
+		html += json.data.comment;
 		html += '</p>';
 		html += '<a href="#!" class="secondary-content"></a>';
 		html += '</li>';
 
 		mergedOpinions.innerHTML += html;
 
-		Materialize.toast('의견그룹 ' + json.title + ' 이(가) 아래 표에 추가되었습니다.', 4000);
+		Materialize.toast('의견그룹 ' + json.data.title + ' 이(가) 아래 표에 추가되었습니다.', 4000);
 	}
 
 	function modify (json) {
 		remove(json);
-		canvas.add(json);
+		canvas.add(json.data);
 	}
 
 	function createVote (json) {
@@ -348,7 +350,7 @@
 				color = "blue";
 
 
-			html += '<li class="' + color + '" style="width:' + count[i] / json.sumCount * 100 + '%;">' + title[i] + '</li>'
+			html += '<li class="' + color + '" style="width:' + count[i] / json.people * 100 + '%;">' + title[i] + '</li>'
 		}
 
     	html += '<li id="voteStats" style="color:black; font-style: normal;">투표 인원 : ' +

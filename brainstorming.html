@@ -74,6 +74,7 @@
             </div>
           </div>
         </div>
+        <!-- TODO -->
         <div id="tab2" class="col s9 center"> <!-- 투표 개설&대기 탭 -->
           <h3><i class="mdi-content-send brown-text"></i></h3>
           <h5>Vote create&amp;waiting Board</h5>
@@ -323,7 +324,7 @@
 
           // json = JSON.stringify(json);
           // send(json); //서버로 의견 전송 작업
-          add (json.data); //아이디어를 그리는 임시 코드
+          add (json); //아이디어를 그리는 임시 코드
         }
 				input.value = "";
 			}
@@ -344,7 +345,7 @@
 
         // json = JSON.stringify(json);
         //send(json); //서버로 메시지 전송 작업
-        addChatMessage(json.data); //채팅 받는 임시 코드
+        addChatMessage(json); //채팅 받는 임시 코드
 				input.value = "";
 			}
 		}
