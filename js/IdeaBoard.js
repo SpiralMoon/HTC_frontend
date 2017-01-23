@@ -95,7 +95,7 @@
 				patternCode : "4",
 				id:"@myID",
 				teamInviteCode:"@teamInviteCode",
-				data: selectedObject
+				data: selectedObject.text
 			};
 
 			// json = JSON.stringify(json);
@@ -118,11 +118,19 @@
 
 
 			if (e && e.e && selectedObject != null) { //panning && 
+				var text = {
+					text:selectedObject.text,
+					left: selectedObject.left + "",
+		    		top: selectedObject.top + "", 
+		    		fill: 'black',
+		    		fontSize:20 + ""
+				};
+
 				var json = {
 					patternCode:"3",
 					id:"@myID",
 					teamInviteCode:"@teamInviteCode",
-					data: selectedObject
+					data: text
 				};
 
 				// json = JSON.stringify(json);
@@ -263,14 +271,32 @@
 	}
 
 	function remove (json) {
+		console.log(json);
+
 		for (var i = 0; i < canvas._objects.length; i++)
 		{
 			if (typeof json === 'object')
 			{
-				if (canvas._objects[i].text == json.data.text) {
-					opinionList.splice(i, 1);
-					canvas.remove(json.data);
-					canvas2.remove(json.data);
+				if (json.data == undefined) {
+					if (canvas._objects[i].text == json.text) {
+						opinionList.splice(i, 1);
+						canvas.remove(json);
+						canvas2.remove(json);
+					}
+				}
+				else if (json.data != undefined){
+					if (canvas._objects[i].text == json.data.text) {
+						opinionList.splice(i, 1);
+						canvas.remove(json.data);
+						canvas2.remove(json.data);
+					}
+					else {						
+						if (canvas._objects[i].text == json.data) {
+							canvas.remove(canvas._objects[i]);
+							canvas2.remove(canvas2._objects[i]);
+							opinionList.splice(i, 1);
+						}
+					}
 				}
 			}
 			else if (typeof json === 'string')
@@ -317,9 +343,17 @@
 	}
 
 	function modify (json) {
-		remove(json);
-		canvas.add(json.data);
-		canvas2.add(json.data);
+
+		var text = new fabric.Text(json.data.text, { 
+    		left: parseInt(json.data.left),
+    		top: parseInt(json.data.top), 
+    		fill: json.data.fill,
+    		fontSize:parseInt(json.data.fontSize)
+		});
+
+		remove(text);
+		// canvas.add(text);
+		// canvas2.add(text);
 	}
 
 	function createVote (json) {
@@ -456,6 +490,8 @@
 			modalNumber:modalNumber
 		}
 
+
+		// json = JSON.stringify(json);
 		// send(json);
 		changeTab(json);
 	}
