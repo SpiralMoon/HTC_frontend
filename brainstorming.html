@@ -16,11 +16,13 @@
 	<!-- 메인 페이지 -->
 	<nav id="home" class="white" role="navigation">
   	<div class="nav-wrapper container">
-    		<a id="logo-container" href="#" class="brand-logo waves-effect">토론 주제</a>
+    		<a id="logo-container" href="#" class="brand-logo waves-effect">"@teamGoal"</a>
     		<ul class="right hide-on-med-and-down">
+          <li><a class="navButton modal-trigger" href="#inviteModal">초대코드</a></li>
       		<li><a class="navButton modal-trigger" href="#exitModal">EXIT</a></li>
     		</ul>
     		<ul id="nav-mobile" class="side-nav">
+          <li><a class="navButton modal-trigger" href="#inviteModal">초대코드</a></li>
       		<li><a class="navButton modal-trigger" href="#exitModal">EXIT</a></li>
     		</ul>
     		<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -32,10 +34,10 @@
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s3 "><a class="active" href="#tab1">1단계 : 브레인스토밍</a></li>
-            <li class="tab col s3 "><a href="#tab2">2단계 : 투표 개설&amp;대기</a></li>
-            <li class="tab col s3 "><a href="#tab3">3단계 : 투표 진행</a></li>
-            <li class="tab col s3 "><a href="#tab4">4단계 : 회의 결과</a></li>
+            <li id="tabMenu1" class="tab col s3 "><a class="active" href="#tab1">1단계 : 브레인스토밍</a></li>
+            <li id="tabMenu2"  class="tab col s3 "><a href="#tab2">2단계 : 의견 그룹화</a></li>
+            <li id="tabMenu3"  class="tab col s3 "><a href="#tab3">3단계 : 투표 진행</a></li>
+            <li id="tabMenu4"  class="tab col s3 "><a href="#tab4">4단계 : 회의 결과</a></li>
           </ul>
         </div>
         <div class="col s3"> <!-- 채팅방 => 항상 표시되는 공간 -->
@@ -63,71 +65,26 @@
               <input id="first_name" type="text" class="validate" length="10" maxLength="10" onkeydown="enterOpinion(event, this)">
               <label for="first_name">Enter the your opinion.</label>
             </div>
-            <div class="input-field col s3 center">
-              <a class="waves-effect waves-light btn-large" onclick="removeOpinion()"><i class="material-icons left">no_sim</i>의견 삭제</a>
-            </div>
-            <div class="input-field col s3 center">
-              <a class="waves-effect waves-light btn-large modal-trigger" href="#mergeModal"><i class="material-icons left">language</i>의견 그룹화</a>
-            </div>
-            <div class="input-field col s3 center">
+            <div class="input-field col s3 right">
               <a class="waves-effect waves-light btn-large modal-trigger" href="#nextModal1"><i class="material-icons left">play_arrow</i>다음 단계로</a>
+            </div>
+            <div class="input-field col s3 right">
+              <a class="waves-effect waves-light btn-large" onclick="removeOpinion()"><i class="material-icons left">no_sim</i>의견 삭제</a>
             </div>
           </div>
         </div>
         <!-- TODO -->
-        <div id="tab2" class="col s9 center"> <!-- 투표 개설&대기 탭 -->
+        <div id="tab2" class="col s9"> <!-- 의견 그룹화 탭 -->
           <h3><i class="mdi-content-send brown-text"></i></h3>
-          <h5>Vote create&amp;waiting Board</h5>
-          <div id="" style="width:100%; height:400px; border:1px solid; border-color: black; overflow:auto;">
-            <div class="preloader-wrapper big active">
-              <div class="spinner-layer spinner-blue">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-
-              <div class="spinner-layer spinner-red">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-
-              <div class="spinner-layer spinner-yellow">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-
-              <div class="spinner-layer spinner-green">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div><div class="gap-patch">
-                  <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
-            </div>
-            <br>
-            <br>
-            <br>
-            <h5>방장이 투표를 개설중입니다. 잠시만 기다려주십시오...</h5>
-          </div>
+          <h5 class="center">Idea Grouping Board</h5>
+          <canvas id="groupBoard" style="width:100%; height:400px; border:1px solid; border-color: black; ">
+          </canvas>
           <div class="row">
+            <div class="input-field col s3 rigth">
+              <a class="waves-effect waves-light btn-large modal-trigger" href="#mergeModal"><i class="material-icons left">language</i>의견 그룹화</a>
+            </div>
             <div class="input-field col s3 right">
-              <a class="waves-effect waves-light btn-large" href="#nextModal2"><i class="material-icons left">assessment</i>투표 개설</a>
+              <a class="waves-effect waves-light btn-large" href="#nextModal2"><i class="material-icons left">play_arrow</i>다음 단계로</a>
             </div>
           </div>
         </div>
@@ -147,7 +104,7 @@
               <a class="waves-effect waves-light btn-large" href="#nextModal3"><i class="material-icons left">pause</i>투표 종료</a>
             </div>
             <div class="input-field col s3 right">
-              <a class="waves-effect waves-light btn-large" onclick="submitVote()"><i class="material-icons left">thumb_up</i>투표 하기</a>
+              <a id="voteSubmitButton" class="waves-effect waves-light btn-large" onclick="submitVote()"><i class="material-icons left">thumb_up</i>투표 하기</a>
             </div>
           </div>
         </div>
@@ -203,11 +160,11 @@
             <div class="input-field col s12">
               <div class="row">
                 <div class="input-field col s6">
-                  <input id="mergeTitle" name="mergeTitle" type="text" class="validate">
+                  <input id="mergeTitle" name="mergeTitle" type="text" class="validate" length="15" maxlength="15">
                   <label for="mergeTitle">그룹명</label>
                 </div>
                 <div class="input-field col s6">
-                  <input id="mergeComment" name="mergeComment" type="text" class="validate" placeholder="의견그룹에 의미를 부여합니다.">
+                  <input id="mergeComment" name="mergeComment" type="text" class="validate" length="100" maxlength="100" placeholder="의견그룹에 의미를 부여합니다.">
                   <label for="mergeComemnt">코멘트</label>
                 </div>
               </div>
@@ -225,7 +182,7 @@
     </div>
   </div>
 
-  <!-- 브레인스토밍 -> 투표 개설&대기 탭으로 넘어가는 modal -->
+  <!-- 브레인스토밍 -> 의견 그룹화 탭으로 넘어가는 modal -->
   <div id="nextModal1" class="modal modal-footer">
     <div class="modal-content">
       <h5>다음 단계로</h5>
@@ -233,7 +190,7 @@
         <form id="" class="col s12">
           <div class="row">
             <div class="input-field col s12">
-              <p>설명 : 브레인스토밍을 마치고 다음 단계로 진행합니다. 이 권한은 방장에게만 주어집니다. 반드시 필요한 의견들이 모두 그룹화 되었을 때 실행하세요.</p>
+              <p>설명 : 브레인스토밍을 마치고 다음 단계로 진행합니다. 이 권한은 방장에게만 주어집니다. 더 이상 의견을 제출할 수 없습니다.</p>
             </div>
           </div>
         </form> 
@@ -245,7 +202,7 @@
     </div>
   </div>
 
-  <!-- 투표 진행 -> 투표 결과 탭으로 넘어가는 modal -->
+  <!-- 의견 그룹화 -> 투표 진행 탭으로 넘어가는 modal -->
   <div id="nextModal2" class="modal modal-footer">
     <div class="modal-content">
       <h5>다음 단계로</h5>
@@ -255,7 +212,7 @@
             <div class="input-field col s12">
               <div class="input-field col s12">
                 <input placeholder="브레인스토밍을 통해 얻고자 한 것을 적어주세요." id="voteTitle" type="text" class="validate" length="30" maxlength="30">
-                <label for="voteTitle">투표 제목</label>
+                <label for="voteTitle">투표 주제</label>
               </div>
               <div class="input-field col s12">
                 <input type="checkbox" id="multiple" />
@@ -293,6 +250,25 @@
     <div class="modal-footer">
       <a class="modal-action modal-close waves-effect waves-green btn-flat" onclick="next(3); finishVote();">예</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">아니오</a>
+    </div>
+  </div>
+
+  <!-- 초대코드 modal -->
+  <div id="inviteModal" class="modal modal-footer">
+    <div class="modal-content">
+      <h5>초대코드</h5>
+      <div class="row">
+        <form id="" class="col s12">
+          <div class="row">
+            <div class="input-field col s12"> <!-- TODO 초대코드 표시 -->
+              <p>설명 : 위에 표시된 초대코드를 이용하여 다른 사용자를 방에 초대할 수 있습니다.</p>
+            </div>
+          </div>
+        </form> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">닫기</a>
     </div>
   </div>
 

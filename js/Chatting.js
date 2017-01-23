@@ -4,13 +4,13 @@ function addChatMessage (json) {
 	var newMessage = "";
 
 	// TODO
-	if ("나" == json.data.name) //내가 보낸 메시지면
+	if ("@myID" == json.id) //내가 보낸 메시지면
 		newMessage = '<p align="right" style="color: red;">' + json.data.name + " : " + json.data.message + '</p>';
 	else //내가 보낸 메시지가 아니면
 		newMessage = '<p align="left">' + json.data.name + " : " + json.data.message + '</p>';
 
-
 	chattingList.innerHTML += newMessage;
+	chattingList.scrollTop = chattingList.scrollHeight; //스크롤 자동 내리기
 }
 
 function newPeople (json) {

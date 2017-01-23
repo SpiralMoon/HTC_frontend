@@ -3,19 +3,21 @@ var webSocket = new WebSocket("ws://m");
 
 webSocket.onmessage = function (event) {
 
+	// event = JSON.parse(event);
+
 	try {
 		switch (event.patternCode) {
 			case "1": //채팅
-			addChatMessage(event.data);
+			addChatMessage(event);
 			break;
 			case "2": //의견 추가
-			add(event.data);
+			add(event);
 			break;
 			case "3": //의견 수정
-			modify(event.data);
+			modify(event);
 			break;
 			case "4": //의견 삭제
-			remove(event.data);
+			remove(event);
 			break;
 			case "5": //의견 그룹화 (화면 하단 표에 추가)
 			merge(event.data);
@@ -48,8 +50,9 @@ webSocket.onmessage = function (event) {
 webSocket.onopen = function (event) {
 	var json = {
 		patternCode:"9",
-		id:"",
-		nickname:""
+		id:"@myID",
+		teamInviteCode:"@teamInviteCode",
+		nickname:"@myNickName"
 	}
 
 	// json = JSON.stringify(json);
@@ -62,8 +65,9 @@ webSocket.onopen = function (event) {
 webSocket.onclose = function (event) {
 	var json = {
 		patternCode:"10",
-		id:"",
-		nickname:""
+		id:"@myID",
+		teamInviteCode:"@teamInviteCode",
+		nickname:"@myNickName"
 	}
 
 	// json = JSON.stringify(json);
