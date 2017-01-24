@@ -232,13 +232,14 @@
 
 		for (var i = 0; i < voteCount.length; i++) {
 			sumCount += voteCount[i];
+			voteCount[i] = voteCount[i] + ""; 
 		}
 
 		var data = {
 			title:title, //투표 항목명 배열
 			voteCount:voteCount, //득표수 배열
-			people:votedPeople, //총 투표 인원
-			sumCount:sumCount //총 투표수
+			people:votedPeople + "", //총 투표 인원
+			sumCount:sumCount + "" //총 투표수
 		};
 
 		var json = {
@@ -409,9 +410,9 @@
 		//득표율이 높은 순으로 정렬 (내림차순)
 		for (var i = 0; i < title.length; i++) {
 			for (var j = 0; j < title.length; j++) {
-				if (count[i] > count[j]) {
-					var temp1 = count[i];
-					count[i] = count[j];
+				if (parseInt(count[i]) > parseInt(count[j])) {
+					var temp1 = parseInt(count[i]);
+					count[i] = parseInt(count[j]);
 					count[j] = temp1;
 
 					var temp2 = title[i];
@@ -448,7 +449,7 @@
 				color = "blue";
 
 
-			html += '<li class="' + color + '" style="width:' + count[i] / json.people * 100 + '%;">' + title[i] + '</li>'
+			html += '<li class="' + color + '" style="width:' + parseInt(count[i]) / parseInt(json.people) * 100 + '%;">' + title[i] + '</li>'
 		}
 
     	html += '<li id="voteStats" style="color:black; font-style: normal;">투표 인원 : ' +
