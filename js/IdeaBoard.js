@@ -75,9 +75,8 @@
 				teamInviteCode:"@teamInviteCode",
 				data : data
 			};
-			// json = JSON.stringify(json);
-			// send(json);
-			merge(json.data);
+			
+			send(json);
 		}
 		else //드래그된 의견이 하나도 없을 경우 -> 그룹화할 의견을 선택하지 않은 경우
 			Materialize.toast('최소 둘 이상의 의견을 드래그하여 다시 실행해주세요.', 4000);
@@ -98,9 +97,7 @@
 				data: selectedObject.text
 			};
 
-			// json = JSON.stringify(json);
-			// send(json);
-			remove(json);
+			send(json);
 		}
 		else if (selectedGroup) //드래그된 그룹은 삭제할 수 없도록 표시
 			Materialize.toast('여러개의 의견은 동시에 삭제할 수 없습니다!', 4000);
@@ -133,9 +130,7 @@
 					data: text
 				};
 
-				// json = JSON.stringify(json);
-				// send(json);
-				modify(json);
+				send(json);
 			}
 		});
 		canvas.on('mouse:out', function (e) {
@@ -179,9 +174,7 @@
 			data:vote
 		}
 
-		// json = JSON.stringify(json);
-		// send(json);
-		createVote(json.data);
+		send(json);
 	}
 
 	function submitVote () {
@@ -212,9 +205,7 @@
 			data : data
 		};
 
-		// json = JSON.stringify(json);
-		// send(json);
-		receiveVote(json.data);
+		send(json);
 
 		document.getElementById('voteSubmitButton').setAttribute('disabled', 'true');
 		Materialize.toast('투표하였습니다. 방장이 투표를 종료할 때까지 기다려주십시오.', 4000);
@@ -249,10 +240,7 @@
 			data:data
 		};
 
-		// json = JSON.stringify(json);
-		// send(json);
-
-		showResult(json.data);
+		send(json);
 	}
 
 	/*
@@ -458,19 +446,19 @@
 		resultGraph.innerHTML = html;
 	}
 
-	function changeTab (json) {
-		switch (json.modalNumber) {
-			case 1: //브레인스토밍 -> 의견 그룹화
+	function changeTab (modalNumber) {
+		switch (modalNumber) {
+			case "1": //브레인스토밍 -> 의견 그룹화
 				$jq('ul.tabs').tabs('select_tab', 'tab2');
 				document.getElementById('tabMenu1').setAttribute('class', 'tab col s3 disabled');
 				Materialize.toast('브레인스토밍이 종료되었습니다. 그룹화된 의견을 바탕으로 투표를 준비합니다.', 4000);
 			break;
-			case 2: //의견 그룹화 -> 투표 진행
+			case "2": //의견 그룹화 -> 투표 진행
 				$jq('ul.tabs').tabs('select_tab', 'tab3');
 				document.getElementById('tabMenu2').setAttribute('class', 'tab col s3 disabled');
 				Materialize.toast('투표가 개설되었습니다. 최대한 투표에 참여해주시기 바랍니다.', 4000);
 			break;
-			case 3: //투표 진행 -> 회의 결과
+			case "3": //투표 진행 -> 회의 결과
 				$jq('ul.tabs').tabs('select_tab', 'tab4');
 				document.getElementById('tabMenu3').setAttribute('class', 'tab col s3 disabled');
 				Materialize.toast('투표가 종료되었습니다.', 4000);
@@ -488,13 +476,12 @@
 			patternCode:"11",
 			id:"@myID",
 			teamInviteCode:"@teamInviteCode",
-			modalNumber:modalNumber
+			modalNumber:modalNumber+""
 		}
 
 
-		// json = JSON.stringify(json);
-		// send(json);
-		changeTab(json);
+		send(json);
+		return;
 	}
 
 	//---------------------------------------------------------------
@@ -504,4 +491,54 @@
 
 	function getRandomY () {
 		return Math.floor(Math.random() * 390) + 1;  // returns a Y
+	}
+
+	function test (json) {
+
+		json = JSON.parse(json);
+
+		console.log("수신 데이터 : " + json);
+		console.log("패턴 " + json.patternCode + "실행");
+		console.log(json.modalNumber);
+
+		try {
+			switch (json.patternCode) {
+				case "1": //채팅
+				addChatMessage(json);
+				break;
+				case "2": //의견 추가
+				add(json);
+				break;
+				case "3": //의견 수정
+				modify(json);
+				break;
+				case "4": //의견 삭제
+				remove(json);
+				break;
+				case "5": //의견 그룹화 (화면 하단 표에 추가)
+				merge(json.data);
+				break;
+				case "6": //투표 개설
+				createVote(json.data);
+				break;
+				case "7": //투표 참여
+				receiveVote(json.data);
+				break;
+				case "8": //투표 결과 출력
+				showResult(json.data);
+				break;
+				case "9": //누군가가 방 입장
+				break;
+				case "10": //누군가가 방 퇴장
+				break;
+				case "11": //다음 탭으로 전환
+				changeTab(json.modalNumber);
+				break;
+				default:
+				break;
+			}
+		}
+		catch (ex) {
+			console.log(ex);
+		}
 	}

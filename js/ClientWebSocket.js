@@ -4,6 +4,7 @@ var webSocket = new WebSocket("ws://m");
 webSocket.onmessage = function (event) {
 
 	// event = JSON.parse(event);
+	console.log("받은 데이터 : " + event);
 
 	try {
 		switch (event.patternCode) {
@@ -36,7 +37,7 @@ webSocket.onmessage = function (event) {
 			case "10": //누군가가 방 퇴장
 			break;
 			case "11": //다음 탭으로 전환
-			next(event.data);
+			next(event.modalNumber);
 			break;
 			default:
 			break;
@@ -79,5 +80,8 @@ webSocket.onclose = function (event) {
 
 <!-- 데이터 송신 -->
 function send(json) {
-	webSocket.send(json);
+	json = JSON.stringify(json);
+	console.log("송신 데이터 : " + json);
+	test(json);
+	// webSocket.send(json);
 }
