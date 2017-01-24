@@ -33,8 +33,10 @@ webSocket.onmessage = function (event) {
 			showResult(event.data);
 			break;
 			case "9": //누군가가 방 입장
+			joinPeople(event);
 			break;
 			case "10": //누군가가 방 퇴장
+			leftPeople(event);
 			break;
 			case "11": //다음 탭으로 전환
 			next(event.modalNumber);

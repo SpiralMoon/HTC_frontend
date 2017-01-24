@@ -66,14 +66,13 @@
               <label for="first_name">Enter the your opinion.</label>
             </div>
             <div class="input-field col s3 right">
-              <a class="waves-effect waves-light btn-large modal-trigger" href="#nextModal1"><i class="material-icons left">play_arrow</i>다음 단계로</a>
+              <a class="waves-effect waves-light btn-large modal-trigger adminItem" href="#nextModal1"><i class="material-icons left">play_arrow</i>다음 단계로</a>
             </div>
             <div class="input-field col s3 right">
               <a class="waves-effect waves-light btn-large" onclick="removeOpinion()"><i class="material-icons left">no_sim</i>의견 삭제</a>
             </div>
           </div>
         </div>
-        <!-- TODO -->
         <div id="tab2" class="col s9"> <!-- 의견 그룹화 탭 -->
           <h3><i class="mdi-content-send brown-text"></i></h3>
           <h5 class="center">Idea Grouping Board</h5>
@@ -81,10 +80,10 @@
           </canvas>
           <div class="row">
             <div class="input-field col s3 rigth">
-              <a class="waves-effect waves-light btn-large modal-trigger" href="#mergeModal"><i class="material-icons left">language</i>의견 그룹화</a>
+              <a class="waves-effect waves-light btn-large modal-trigger adminItem" href="#mergeModal"><i class="material-icons left">language</i>의견 그룹화</a>
             </div>
             <div class="input-field col s3 right">
-              <a class="waves-effect waves-light btn-large" href="#nextModal2"><i class="material-icons left">play_arrow</i>다음 단계로</a>
+              <a class="waves-effect waves-light btn-large adminItem" href="#nextModal2"><i class="material-icons left">play_arrow</i>다음 단계로</a>
             </div>
           </div>
         </div>
@@ -101,7 +100,7 @@
           </div>
           <div class="row">
             <div class="input-field col s3 right">
-              <a class="waves-effect waves-light btn-large" href="#nextModal3"><i class="material-icons left">pause</i>투표 종료</a>
+              <a class="waves-effect waves-light btn-large adminItem" href="#nextModal3"><i class="material-icons left">pause</i>투표 종료</a>
             </div>
             <div class="input-field col s3 right">
               <a id="voteSubmitButton" class="waves-effect waves-light btn-large" onclick="submitVote()"><i class="material-icons left">thumb_up</i>투표 하기</a>
@@ -260,7 +259,7 @@
       <div class="row">
         <form id="" class="col s12">
           <div class="row">
-            <div class="input-field col s12"> <!-- TODO 초대코드 표시 -->
+            <div class="input-field col s12">
               <p>설명 : 위에 표시된 초대코드를 이용하여 다른 사용자를 방에 초대할 수 있습니다.</p>
             </div>
           </div>
@@ -282,8 +281,9 @@
 	<script src="js/IdeaBoard.js"></script>
 	<script type="text/javascript">
 
+    var isAdmin = true; //TODO 삭제하시오
+
     modifyOpinion(); //canvas 내의 의견을 움직일 때 반응하는 리스너 함수
-    // document.getElementById('multiple').value = "off";
 
 		function enterOpinion (event, input) {
 			var isEntered = (event.keyCode == 13 && input.value != "")?  true : false;
@@ -298,9 +298,7 @@
             data:data
           };
 
-          // json = JSON.stringify(json);
-          // send(json); //서버로 의견 전송 작업
-          add (json); //아이디어를 그리는 임시 코드
+          send(json); //서버로 의견 전송 작업
         }
 				input.value = "";
 			}
@@ -319,9 +317,7 @@
           }
         };
 
-        // json = JSON.stringify(json);
-        //send(json); //서버로 메시지 전송 작업
-        addChatMessage(json); //채팅 받는 임시 코드
+        send(json); //서버로 메시지 전송 작업
 				input.value = "";
 			}
 		}
@@ -351,6 +347,13 @@
         removeOpinion();
       }
     }
+
+    //방장 권한
+    var adminItem = document.getElementsByClassName('adminItem');
+
+    if (!isAdmin) //내가 방장이 아니면
+      for (var i = 0; i < adminItem.length; i++)
+        adminItem[i].setAttribute('disabled', true); //방장만 실행 할 수 있는 기능을 막음
 
 	</script>
 </body>

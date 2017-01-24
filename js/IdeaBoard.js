@@ -13,13 +13,17 @@
 	canvas2.setHeight(canvasHeight);
 	canvas2.setWidth(canvasWidth);
 
+	//현재 진행단계
+	var currentTab = 1;
+
 
 	//현재 투표 현황
 	var voteList = document.getElementById('voteList').getElementsByTagName('li');
 	var votedPeople = 0; //투표에 참여한 인원 수
 	var voteCount = new Array(); //각 항목에 대한 투표 수
 
-	var opinionList = new Array(); //의견 리스트 배열
+	//의견 리스트 배열
+	var opinionList = new Array();
 
 
 	/*
@@ -56,7 +60,6 @@
 			}
 		}
 
-		//TODO 방장권한
 		if(canvas2.getActiveGroup()) { //의견들이 드래그된 상태
 			var mergeGroup = new Array();
 
@@ -90,14 +93,25 @@
 
 		if (selectedObject) //단일 대상 삭제
 		{
-			var json = {
-				patternCode : "4",
-				id:"@myID",
-				teamInviteCode:"@teamInviteCode",
-				data: selectedObject.text
-			};
+			var index = 0;
 
-			send(json);
+			for (var i = 0; i < opinionList.length; i++) {
+				if (selectedObject.content == opinionList[i].text)
+					index = i;
+			}
+
+			if (isAdmin || ("@myID" == opinionList[index].id)) { //TODO 방장권한, private 
+				var json = {
+					patternCode : "4",
+					id:"@myID",
+					teamInviteCode:"@teamInviteCode",
+					data: selectedObject.text //삭제할 데이터의 text
+				};
+
+				send(json);
+			}
+			else
+				Materialize.toast('남의 의견은 방장만 삭제할 수 있습니다!', 4000);
 		}
 		else if (selectedGroup) //드래그된 그룹은 삭제할 수 없도록 표시
 			Materialize.toast('여러개의 의견은 동시에 삭제할 수 없습니다!', 4000);
@@ -112,7 +126,6 @@
 
 		canvas.on('mouse:up', function (e) {
 		    // panning = false;
-
 
 			if (e && e.e && selectedObject != null) { //panning && 
 				var text = {
@@ -254,14 +267,15 @@
     		fontSize:parseInt(json.data.fontSize)
 		});
 
+		if (!isAdmin && "MyID" != json.id) //TODO 개인 권한 식별
+			text.set('selectable', false); //내가 작성한 의견이 아니면 움직일 수 없게 만듬
+
 		opinionList.push(json);
 		canvas.add(text);
 		canvas2.add(text);
 	}
 
 	function remove (json) {
-		console.log(json);
-
 		for (var i = 0; i < canvas._objects.length; i++)
 		{
 			if (typeof json === 'object')
@@ -273,18 +287,16 @@
 						canvas2.remove(json);
 					}
 				}
-				else if (json.data != undefined){
-					if (canvas._objects[i].text == json.data.text) {
+				else if (json.data != undefined) {			
+					if (canvas._objects[i].text == json.data) {
+						canvas.remove(canvas._objects[i]);
+						canvas2.remove(canvas2._objects[i]);
 						opinionList.splice(i, 1);
-						canvas.remove(json.data);
-						canvas2.remove(json.data);
 					}
-					else {						
-						if (canvas._objects[i].text == json.data) {
-							canvas.remove(canvas._objects[i]);
-							canvas2.remove(canvas2._objects[i]);
-							opinionList.splice(i, 1);
-						}
+					else if (canvas._objects[i].text == json.data.text) {
+						canvas.remove(canvas._objects[i]);
+						canvas2.remove(canvas2._objects[i]);
+						opinionList.splice(i, 1);
 					}
 				}
 			}
@@ -304,12 +316,10 @@
 	}
 
 	function merge (json) {	
-		console.log(json);
-
 		var mergedOpinions =  document.getElementById("mergedOpinions"); //그룹화 표
 		var mergedData = "";
 		var html = "";
-
+		
 		for (var i = 0; i < json.mergeGroup.length; i++) //2중 for문을 써서 canvas의 멤버와 매치 시켜야하는 부분
 		{
 			mergedData += json.mergeGroup[i] + ", ";
@@ -340,9 +350,9 @@
     		fontSize:parseInt(json.data.fontSize)
 		});
 
-		remove(text);
-		// canvas.add(text);
-		// canvas2.add(text);
+		remove(json);
+		canvas.add(text);
+		canvas2.add(text);
 	}
 
 	function createVote (json) {
@@ -451,7 +461,7 @@
 			case "1": //브레인스토밍 -> 의견 그룹화
 				$jq('ul.tabs').tabs('select_tab', 'tab2');
 				document.getElementById('tabMenu1').setAttribute('class', 'tab col s3 disabled');
-				Materialize.toast('브레인스토밍이 종료되었습니다. 그룹화된 의견을 바탕으로 투표를 준비합니다.', 4000);
+				Materialize.toast('의견 제출이 종료되었습니다. 제출된 의견들을 그룹화하여 주시기 바랍니다.', 4000);
 			break;
 			case "2": //의견 그룹화 -> 투표 진행
 				$jq('ul.tabs').tabs('select_tab', 'tab3');
@@ -499,7 +509,6 @@
 
 		console.log("수신 데이터 : " + json);
 		console.log("패턴 " + json.patternCode + "실행");
-		console.log(json.modalNumber);
 
 		try {
 			switch (json.patternCode) {

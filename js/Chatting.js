@@ -13,10 +13,18 @@ function addChatMessage (json) {
 	chattingList.scrollTop = chattingList.scrollHeight; //스크롤 자동 내리기
 }
 
-function newPeople (json) {
+function joinPeople (json) {
 	var newMessage = "";
 	
 	newMessage = '<p align="left">' + json.name + ' joined.</p>';
+
+	chattingList.innerHTML += newMessage;
+}
+
+function leftPeople (json) {
+	var newMessage = "";
+	
+	newMessage = '<p align="left">' + json.name + ' left.</p>';
 
 	chattingList.innerHTML += newMessage;
 }
