@@ -133,7 +133,7 @@
 					left: selectedObject.left + "",
 		    		top: selectedObject.top + "", 
 		    		fill: 'black',
-		    		fontSize:20 + ""
+		    		fontSize:selectedObject.fontSize + ""
 				};
 
 				var json = {

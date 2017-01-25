@@ -280,7 +280,6 @@
   <script src="js/Chatting.js"></script>
 	<script src="js/IdeaBoard.js"></script>
 	<script type="text/javascript">
-
     var isAdmin = true; //TODO 삭제하시오
 
     modifyOpinion(); //canvas 내의 의견을 움직일 때 반응하는 리스너 함수
@@ -332,6 +331,14 @@
       $jq('ul.tabs').tabs();
     });
 
+    // $jq(window).bind("beforeunload", function () {
+    //       alert( ' 로그아웃 되었습니다.' );
+    // });
+
+    window.onbeforeunload = function () { //창 닫을 때 실행
+      leftRoom();
+    };
+
     //새로고침 방지, del키로 의견 삭제
     document.onkeydown = function(e) {
       key = (e) ? e.keyCode : event.keyCode;
@@ -354,6 +361,7 @@
     if (!isAdmin) //내가 방장이 아니면
       for (var i = 0; i < adminItem.length; i++)
         adminItem[i].setAttribute('disabled', true); //방장만 실행 할 수 있는 기능을 막음
+
 
 	</script>
 </body>

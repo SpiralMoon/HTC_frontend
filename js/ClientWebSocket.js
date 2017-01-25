@@ -66,6 +66,12 @@ webSocket.onopen = function (event) {
 }
 
 webSocket.onclose = function (event) {
+	leftRoom();
+
+	console.log("서버 연결 해제");
+}
+
+function leftRoom() {
 	var json = {
 		patternCode:"10",
 		id:"@myID",
@@ -76,8 +82,6 @@ webSocket.onclose = function (event) {
 	// json = JSON.stringify(json);
 
 	send(json);
-
-	console.log("서버 연결 해제");
 }
 
 <!-- 데이터 송신 -->
